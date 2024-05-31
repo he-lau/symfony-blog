@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,5 +67,22 @@ class DefaultController extends AbstractController
         ]);
 
         return $response;
+    }
+
+    #[Route('/article/ajouter',name:"ajout_article")]
+    public function ajouter(EntityManagerInterface $manager) {
+
+        // creation de l'objet
+        $article = new Article(); 
+        $article->setTitre("Titre article");
+        $article->setContenu("Contenu de l'article.");
+        $article->setDateCreation(new DateTime('now'));
+
+        // injection bdd
+        $manager->persist($article);
+        $manager->flush();
+
+        //dump($article);
+        die();
     }
 }
