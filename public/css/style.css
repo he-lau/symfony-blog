@@ -1,0 +1,10 @@
+/* symfony composer require symfony/asset */
+/* https://packagist.org/ */
+
+body {
+  background-color: lightblue !important;
+}
+
+.navbar {
+  margin-bottom: 2em;
+}
