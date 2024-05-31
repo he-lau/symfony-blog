@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}  
-    Article n°{{id}} 
+{% block title %}
+    {% if article is defined and article is not null %}
+        Article n°{{ article.id }}
+    {% else %}
+        Id not found
+    {% endif %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -23,10 +27,14 @@ Vestibulum imperdiet interdum hendrerit. Nunc nunc eros, ultricies a scelerisque
 
     <div class="container">
 
-    {% if id is defined %}
-        <h1>Article n°{{id}} </h1>
-        <p>{{lorem}}</p>
-
+    {% if article is defined and article is not null %}
+        <h1>{{article.titre}} </h1>
+        <small>{{article.dateCreation|date('d/m/Y')}}</small>
+        <p>{{article.contenu}}</p>
+    {% else %}
+        <h1>Erreur</h1>
+        <small>{{"now"|date()}}</small>
+        <p>Article non trouvé.</p>
     {% endif %}
         </div>
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Repository\ArticleRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,30 +14,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DefaultController extends AbstractController
 {
-
-    private $articles;
-
     // constructeur
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $this->articles = [
-            [
-                'nom' => "AAAA",
-                //'url' => $urlGenerator->generate('vue_article', ['id' => "564"])
-                'id' => 564
-            ],
-            [
-                'nom' => "LSNJNS",
-                //'url' => $urlGenerator->generate('vue_article', ['id' => "564"])
-                'id' => 42
-            ],
-            [
-                'nom' => "PKLM",
-                //'url' => $urlGenerator->generate('vue_article', ['id' => "564"])
-                'id' => 4242
-            ]            
-
-        ];
     }
 
     #[Route(
@@ -44,12 +24,24 @@ class DefaultController extends AbstractController
         'liste_articles',
         methods:['GET']
     )]
-    public function listeArticles():Response {
+    public function listeArticles(ArticleRepository $repo):Response {
         //dump($this->url);die();
         //return new Response(content:"Hello default route !");
+
+        //$articles = $repo->findAll();
+
+        $articles = $repo->findBy(
+            [],[
+                'dateCreation' => "DESC"
+            ]
+            
+        );
+
+        
+        
         $response = $this->render(view:'default/index.html.twig',parameters:[
             'controller_name'=>"liste_articles",
-            'articles'=>$this->articles
+            'articles'=>$articles
         ]);
         return $response;
     }    
@@ -61,9 +53,15 @@ class DefaultController extends AbstractController
         methods:["GET"]
     )]
     
-    public function vueArticle($id) {
+    public function vueArticle(ArticleRepository $repo, $id) {
+
+        // Récuperer l'article depuis la bdd
+        $article = $repo->find($id);
+
+        //dump($article);die();
+
         $response = $this->render(view:"default/vue.html.twig",parameters:[
-            'id'=>$id
+            'article'=>$article
         ]);
 
         return $response;
