@@ -9,12 +9,28 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
+{% include "menu/_menu.html.twig" %}
+
+
+
+{#
+{% set a = 10 %}
+{{ a|logAlert}}
+{{logAlert(a)}}
+#}
+
+
 <div class="example-wrapper">
+
+    {{path("vue_article",{'id':42})}}
+
     <h1>Liste des articles</h1>
+    {{ "now"|date("d/m/Y")}}
+
     {% if articles is defined and articles|length > 0 %}
         <ul>
         {% for article in articles %}
-            <li><a href="{{ article.url }}">{{article.nom}}</a></li>
+            <li><a href="{{ path("vue_article",{'id':article.id}) }}">{{article.nom}}</a></li>
         {% endfor %}
         </ul>
     {% else %}

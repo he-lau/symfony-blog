@@ -19,8 +19,20 @@ class DefaultController extends AbstractController
         $this->articles = [
             [
                 'nom' => "AAAA",
-                'url' => $urlGenerator->generate('vue_article', ['id' => "564"])
-            ]
+                //'url' => $urlGenerator->generate('vue_article', ['id' => "564"])
+                'id' => 564
+            ],
+            [
+                'nom' => "LSNJNS",
+                //'url' => $urlGenerator->generate('vue_article', ['id' => "564"])
+                'id' => 42
+            ],
+            [
+                'nom' => "PKLM",
+                //'url' => $urlGenerator->generate('vue_article', ['id' => "564"])
+                'id' => 4242
+            ]            
+
         ];
     }
 
