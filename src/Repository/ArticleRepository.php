@@ -22,9 +22,27 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    public function findByDateCreation(DateTime $d) 
+    public function findByDateCreation(DateTime $date) 
     {
         // query
-        
+        $qb = $this->createQueryBuilder('a');
+
+        $qb->select('a')
+           ->where('a.dateCreation = :date')
+           ->setParameter('date', $date->format('Y-m-d'));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByTitre($titre)
+    {
+        // query
+        $qb = $this->createQueryBuilder('a');
+
+        $qb->select('a');
+        $qb->where('a.titre = :titre');
+        $qb->setParameter('titre', $titre);
+
+        return $qb->getQuery()->getOneOrNullResult();        
     }
 }
