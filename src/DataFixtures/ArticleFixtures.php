@@ -21,10 +21,14 @@ class ArticleFixtures extends Fixture
             $date->modify(modifier:'-'.$i.' days');
 
             $article->setDateCreation($date);
+
+            $this->addReference('article-'.$i,$article);
+
             $manager->persist($article);
-
-            $manager->flush();
+            
         }
-
+        $manager->flush();
     }
+
+
 }

@@ -31,6 +31,17 @@ Vestibulum imperdiet interdum hendrerit. Nunc nunc eros, ultricies a scelerisque
         <h1>{{article.titre}} </h1>
         <small>{{article.dateCreation|date('d/m/Y')}}</small>
         <p>{{article.contenu}}</p>
+
+        <h2>Commentaires</h2>
+        <div class='row'>
+            {% for comment in article.comments%}
+                <div class="col-md-12">
+                    <small>Le {{comment.dateComment|date("d/m/Y")}} par <b>{{comment.author}}</b></small>
+                    <p>{{comment.contenu}}</p>
+                </div>
+                
+            {% endfor %}
+        </div>    
     {% else %}
         <h1>Erreur</h1>
         <small>{{"now"|date()}}</small>
