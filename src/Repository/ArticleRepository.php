@@ -25,10 +25,10 @@ class ArticleRepository extends ServiceEntityRepository
     public function findByDateCreation(DateTime $date) 
     {
         // query
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder(alias:'a');
 
         $qb->select('a')
-           ->where('a.dateCreation = :date')
+           ->where(predicates:'a.dateCreation = :date')
            ->setParameter('date', $date->format('Y-m-d'));
 
         return $qb->getQuery()->getResult();

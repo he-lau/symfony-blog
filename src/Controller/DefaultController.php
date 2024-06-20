@@ -43,6 +43,7 @@ class DefaultController extends AbstractController
             'controller_name'=>"liste_articles",
             'articles'=>$articles
         ]);
+
         return $response;
     }    
 
@@ -53,10 +54,13 @@ class DefaultController extends AbstractController
         methods:["GET"]
     )]
     
-    public function vueArticle(ArticleRepository $repo, $id) {
+    //public function vueArticle(ArticleRepository $repo, $id) {
+    public function vueArticle(Article $article) {
+        
+        //dump($article);die();
 
         // Récuperer l'article depuis la bdd
-        $article = $repo->find($id);
+        //$article = $repo->find($id);
 
         //dump($article);die();
 
@@ -69,6 +73,8 @@ class DefaultController extends AbstractController
 
     #[Route('/article/ajouter',name:"ajout_article")]
     public function ajouter(EntityManagerInterface $manager) {
+
+        //dump($manager);die();
 
         // creation de l'objet
         $article = new Article(); 
