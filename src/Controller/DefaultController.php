@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\ArticleType;
+use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +28,10 @@ class DefaultController extends AbstractController
     {
     }
 
+    /**
+     * Afficher la liste des articles 
+     * 
+     */
     #[Route(
         '/',
         'liste_articles',
@@ -53,30 +60,49 @@ class DefaultController extends AbstractController
         return $response;
     }    
 
+    
+    /**
+     * Afficher un article 
+     * 
+     */
     #[Route(
         '/{id}',
         name:'vue_article',
         requirements:['id'=>"\d+"],
-        methods:["GET"]
+        methods:["GET","POST"]
     )]
-    
     //public function vueArticle(ArticleRepository $repo, $id) {
-    public function vueArticle(Article $article) {
-        
-        //dump($article);die();
+    public function vueArticle(Article $article,Request $request, EntityManagerInterface $entityManager) {
 
-        // Récuperer l'article depuis la bdd
-        //$article = $repo->find($id);
+        // instance de Comment pour ensuite mapper avec le form
+        $comment = new Comment();
+        $comment->setArticle($article);
 
-        //dump($article);die();
+        // génerer un form pour l'afficher dans la vue
+        $form = $this->createForm(CommentType::class,$comment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            // 
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            $this->redirectToRoute("vue_article",['id'=>$article->getId()]);
+        }
 
         $response = $this->render(view:"default/vue.html.twig",parameters:[
-            'article'=>$article
+            'article'=>$article,
+            'form'=>$form->createView()
         ]);
 
         return $response;
     }
 
+    /**
+     * 
+     * Afficher le formulaire pour ajouter un article
+     */
     #[Route('/article/ajouter',name:"ajout_article")]
     public function ajouter(EntityManagerInterface $entityManager, Request $request, CategoryRepository $categoryRepository) {
         
