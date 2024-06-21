@@ -36,6 +36,11 @@ class CommentType extends AbstractType
         ;
     }
 
+    /**
+     * 
+     * En indiquant quelle classe est attendu dans ce formulaire, 
+     * Symfony relie automatiquement les données d'une entité au champs correspondant du formulaire
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

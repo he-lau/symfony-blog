@@ -106,27 +106,14 @@ class DefaultController extends AbstractController
     #[Route('/article/ajouter',name:"ajout_article")]
     public function ajouter(EntityManagerInterface $entityManager, Request $request, CategoryRepository $categoryRepository) {
         
-        /*
-        // https://symfony.com/doc/current/forms.html
-        $form = $this->createFormBuilder()
-        ->add("titre",TextType::class,[
-            'label'=>"Titre de l'article"
-        ])
-        ->add('contenu',TextareaType::class,[
-            'label'=> 'Contenu'
-        ])
-        ->add('date', DateType::class,[
-            'label'=>'Date',
-            'widget'=>'single_text',
-            'input'=>'datetime'
-        ])
-       ->getForm();
-       */
 
        $article = new Article();
 
        // formulaire lié à l'entity "Article"
-       $form = $this->createForm(ArticleType::class,$article);
+       $form = $this->createForm(ArticleType::class,$article,[
+        'method'=>'GET',
+        'csrf_protection'=>false
+       ]);
 
        // soumission du form
        $form->handleRequest($request);
@@ -134,28 +121,7 @@ class DefaultController extends AbstractController
        // form valid + token
        if($form->isSubmitted() && $form->isValid()) {
 
-        /*
-
-            $titre = $form->get('titre')->getData();
-            $contenu = $form->get('contenu')->getData();
-            $date = $form->get('date')->getData();
-
-
-            $article = new Article();
-
-            $category = $categoryRepository->findOneBy([
-                    'name'=>'Sport'
-                ]);
-                
-            //dump($article);dump($category);die();   
-            
-            $article
-            ->setTitre($titre)
-            ->setContenu($contenu)
-            ->setDateCreation($date)
-            ->addCategory($category);
-
-        */   
+        die();
         
         $entityManager->persist($article);
         $entityManager->flush();
