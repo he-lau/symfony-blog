@@ -28,11 +28,13 @@ class CommentType extends AbstractType
             ])
             //->add('dateComment')
             //->add('article')
+            /*
             ->add('checkbox',CheckboxType::class,[
                 'mapped'=>false,
                 'label'=> "test",
                 'required' => true
             ])
+            */    
         ;
     }
 

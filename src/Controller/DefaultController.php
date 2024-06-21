@@ -8,6 +8,7 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
+use App\Service\VerificationComment;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -19,6 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 
 class DefaultController extends AbstractController
@@ -72,7 +74,8 @@ class DefaultController extends AbstractController
         methods:["GET","POST"]
     )]
     //public function vueArticle(ArticleRepository $repo, $id) {
-    public function vueArticle(Article $article,Request $request, EntityManagerInterface $entityManager) {
+    public function vueArticle(Article $article,Request $request, EntityManagerInterface $entityManager, VerificationComment $verificationComment) {
+
 
         // instance de Comment pour ensuite mapper avec le form
         $comment = new Comment();
@@ -84,9 +87,21 @@ class DefaultController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            // 
-            $entityManager->persist($comment);
-            $entityManager->flush();
+
+            //dump($comment->getContenu());
+            //dump($verificationComment->commentaireNonAutorise($comment));
+            //die();
+
+            if($verificationComment->commentaireNonAutorise($comment)) {
+                //die;
+                //$session->getFlashBag()->add("error", "Commentaire interdit. Veuillez modifier votre commentaire.");
+                $this->addFlash("danger", "Commentaire interdit. Veuillez modifier votre commentaire.");
+            } else {
+                // 
+                $entityManager->persist($comment);
+                $entityManager->flush();
+
+            }
 
             $this->redirectToRoute("vue_article",['id'=>$article->getId()]);
         }
@@ -121,7 +136,7 @@ class DefaultController extends AbstractController
        // form valid + token
        if($form->isSubmitted() && $form->isValid()) {
 
-        die();
+        //die();
         
         $entityManager->persist($article);
         $entityManager->flush();
