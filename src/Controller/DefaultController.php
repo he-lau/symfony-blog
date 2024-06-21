@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManager;
@@ -78,6 +79,8 @@ class DefaultController extends AbstractController
 
     #[Route('/article/ajouter',name:"ajout_article")]
     public function ajouter(EntityManagerInterface $entityManager, Request $request, CategoryRepository $categoryRepository) {
+        
+        /*
         // https://symfony.com/doc/current/forms.html
         $form = $this->createFormBuilder()
         ->add("titre",TextType::class,[
@@ -92,12 +95,20 @@ class DefaultController extends AbstractController
             'input'=>'datetime'
         ])
        ->getForm();
+       */
+
+       $article = new Article();
+
+       // formulaire lié à l'entity "Article"
+       $form = $this->createForm(ArticleType::class,$article);
 
        // soumission du form
        $form->handleRequest($request);
     
        // form valid + token
        if($form->isSubmitted() && $form->isValid()) {
+
+        /*
 
             $titre = $form->get('titre')->getData();
             $contenu = $form->get('contenu')->getData();
@@ -118,11 +129,11 @@ class DefaultController extends AbstractController
             ->setDateCreation($date)
             ->addCategory($category);
 
-            $entityManager->persist($article);
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('liste_articles');
+        */   
+        
+        $entityManager->persist($article);
+        $entityManager->flush();
+        return $this->redirectToRoute('liste_articles');
 
 
        }
