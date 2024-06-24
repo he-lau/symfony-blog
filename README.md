@@ -12,3 +12,4 @@ Projet d'initiation au framework Symfony 6.
 - `symfony console make:migration` : sauvegarde de migration.
 - `symfony console doctrine:migrations` : exécute les fichiers de migration.
 - `symfony console make:entity`: creer une Entity avec table (bdd).
+- `symfony console make:command`: creer une commande Symfony.
