@@ -6,7 +6,9 @@ use App\Entity\Article;
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleType extends AbstractType
@@ -31,6 +33,12 @@ class ArticleType extends AbstractType
                 'multiple' => true,
                 // IMPORTANT : table de relation
                 'by_reference'=>false
+            ])
+            ->add('brouillon',SubmitType::class,[
+                'label'=>'Enregistrer un brouillon'
+            ])
+            ->add('publier',SubmitType::class,[
+                'label'=>'Publier'
             ])
         ;
     }

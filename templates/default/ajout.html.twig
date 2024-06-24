@@ -26,11 +26,12 @@
         {{ form_widget(form.dateCreation,{'attr':{'class':'form-control'}}) }}   
         
         {{ form_label(form.categories,null,{'label_attr':{"class":'form-label'}})}}
-        {{ form_widget(form.categories,{'attr':{'class':'form-control'}}) }}           
+        {{ form_widget(form.categories,{'attr':{'class':'form-control'}}) }} 
+        
+        {{ form_widget(form.brouillon,{'attr':{'class':'mt-3 btn btn-light'}})}}
+        {{ form_widget(form.publier,{'attr':{'class':'mt-3 btn btn-success'}})}}
 
         {{form_rest(form)}}
-        <br>
-        <button type="submit" class="btn btn-success">Enregistrer</button>
     {{ form_end(form) }}    
     </div>
 {% endblock body %}

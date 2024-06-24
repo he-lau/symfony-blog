@@ -9,6 +9,8 @@ use DateTime;
 
 class ArticleFixtures extends Fixture
 {
+    private $state = ['brouillon','publie'];
+
     public function load(ObjectManager $manager): void
     {
         for($i=0;$i<10;$i++) {
@@ -16,6 +18,7 @@ class ArticleFixtures extends Fixture
             $article = new Article(); 
             $article->setTitre("Titre article $i");
             $article->setContenu("Contenu de l'article $i.");
+            $article->setState($this->state[array_rand($this->state)]);
 
             $date = new DateTime('now');
             $date->modify(modifier:'-'.$i.' days');

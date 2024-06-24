@@ -32,7 +32,13 @@
     {% set nbArticle = articles|length%}
 
 
-    <h1>Liste des articles</h1>
+    <h1>Liste des 
+    {% if state == 'publie' %}
+        articles publiés
+    {% else  %}
+        brouillons    
+    {% endif %}
+    </h1> 
     <small>{{ "now"|date("d/m/Y")}}</small><br/>
     <small>Nombre d'articles : {{nbArticle}}</small><br/>
 

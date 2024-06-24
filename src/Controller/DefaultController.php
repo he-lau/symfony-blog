@@ -45,9 +45,14 @@ class DefaultController extends AbstractController
 
         //$articles = $repo->findAll();
 
+        $state = 'publie';
+
         $articles = $repo->findBy(
-            [],[
+            [
+                'state'=>$state
+            ],[
                 'dateCreation' => "DESC"
+                
             ]
             
         );
@@ -56,7 +61,8 @@ class DefaultController extends AbstractController
         
         $response = $this->render(view:'default/index.html.twig',parameters:[
             'controller_name'=>"liste_articles",
-            'articles'=>$articles
+            'articles'=>$articles,
+            'state'=>$state
         ]);
 
         return $response;
@@ -118,11 +124,16 @@ class DefaultController extends AbstractController
      * 
      * Afficher le formulaire pour ajouter un article
      */
-    #[Route('/article/ajouter',name:"ajout_article")]
-    public function ajouter(EntityManagerInterface $entityManager, Request $request, CategoryRepository $categoryRepository) {
-        
+    #[
+        Route('/article/ajouter',name:"ajout_article"),
+        Route('/article/{id}/edition',name:"edition_article",requirements:['id'=>"\d+"],methods:['GET','POST'])
+    ]
+    public function ajouter(Article $article=null, EntityManagerInterface $entityManager, Request $request, CategoryRepository $categoryRepository) {
 
-       $article = new Article();
+        // si pas d'article recuperer dans l'url
+        if($article===null) {
+            $article = new Article();
+        }
 
        // formulaire lié à l'entity "Article"
        $form = $this->createForm(ArticleType::class,$article,[
@@ -138,8 +149,19 @@ class DefaultController extends AbstractController
 
         //die();
         
-        $entityManager->persist($article);
-        $entityManager->flush();
+        // creation d'un brouillon
+        if ($form->get('brouillon')->isClicked()) {
+            $article->setState('brouillon');
+        } else {
+            $article->setState('publie');
+        }
+
+        // ajout de l'article si pas dans la bdd
+        if($article->getId()===null) {
+            $entityManager->persist($article);
+            $entityManager->flush();
+        }
+
         return $this->redirectToRoute('liste_articles');
 
 
@@ -149,4 +171,33 @@ class DefaultController extends AbstractController
             'form'=>$form->createView()
         ]);
     }
+
+
+    /**
+     * Afficher la liste des articles brouillons
+     */
+    #[
+        Route('/article/brouillon',name:'brouillon_article')
+    ]
+    public function brouillon(ArticleRepository $articleRepository) {
+
+        $state = 'brouillon';
+        $articles = $articleRepository->findBy(
+            [
+                'state'=>$state
+            ],[
+                'dateCreation'=>'DESC'
+            ]
+        );
+
+        $response = $this->render(view:'default/index.html.twig',parameters:[
+            'controller_name'=>"liste_articles",
+            'articles'=>$articles,
+            'state'=>$state
+        ]);
+
+        return $response;
+
+    }
+
 }

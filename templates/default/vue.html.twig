@@ -28,7 +28,10 @@ Vestibulum imperdiet interdum hendrerit. Nunc nunc eros, ultricies a scelerisque
     <div class="container">
 
     {% if article is defined and article is not null %}
-        <h1>{{article.titre}} </h1>
+        <span style="display: flex; align-items: center;">
+            <h1 style="margin: 0;">{{ article.titre }}</h1>
+            <a class="btn btn-warning" href="{{ path('edition_article', {'id': article.id}) }}" style="margin-left: 10px;">Modifier</a>
+        </span>
         <small>{{article.dateCreation|date('d/m/Y')}}</small>
         <p>{{article.contenu}}</p>
 
