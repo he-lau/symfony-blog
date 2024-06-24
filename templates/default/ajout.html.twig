@@ -8,9 +8,6 @@
 
 {% endblock %}
 {% block body %}
-{% include "menu/_menu.html.twig" %}
-
-    <div class="container">    
         <h1>Ajouter un article</h1>
 
     {% if not form.vars.valid %}
@@ -39,5 +36,4 @@
 
         {{form_rest(form)}}
     {{ form_end(form) }}    
-    </div>
 {% endblock body %}
