@@ -109,7 +109,7 @@ class DefaultController extends AbstractController
 
             }
 
-            $this->redirectToRoute("vue_article",['id'=>$article->getId()]);
+            return $this->redirectToRoute("vue_article",['id'=>$article->getId()]);
         }
 
         $response = $this->render(view:"default/vue.html.twig",parameters:[
