@@ -12,15 +12,6 @@
     {{parent()}}
 
 {% endblock %}
-
-{% set lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut feugiat turpis a sem tincidunt porttitor. Cras sodales id tellus in rhoncus. Integer hendrerit non quam ut tincidunt. In elementum nunc id ante malesuada, sed porta neque pretium. Curabitur convallis leo id risus lobortis porttitor. Integer id sem erat. Integer rutrum risus ac nisl fermentum, et laoreet lectus porta. Vestibulum hendrerit ornare scelerisque.
-
-Suspendisse facilisis nisi vitae mauris rhoncus tempus sed eu augue. In venenatis diam a libero lobortis accumsan. Donec a leo commodo, accumsan nisi vel, ultrices sapien. Maecenas felis elit, accumsan ac purus sit amet, laoreet aliquam turpis. Vivamus ex metus, dignissim nec ornare nec, porta a turpis. Vivamus lobortis faucibus dui. In hac habitasse platea dictumst. Sed convallis, lorem a dapibus accumsan, turpis est aliquet neque, vitae euismod risus velit eget ligula. Mauris id tincidunt ipsum. Integer ullamcorper dignissim neque quis feugiat. Etiam luctus enim eget mi faucibus cursus.
-
-Mauris ut ornare eros. Aliquam id diam vulputate, pulvinar massa eu, tincidunt eros. Sed vehicula ipsum dictum ullamcorper sagittis. Sed eu porta diam, nec ullamcorper ante. Integer ac ante sit amet lorem facilisis mattis sit amet in nibh. Integer posuere mi dignissim ante laoreet, aliquet lacinia velit commodo. Duis ullamcorper imperdiet lacus sed fermentum.
-
-Vestibulum imperdiet interdum hendrerit. Nunc nunc eros, ultricies a scelerisque eget, elementum vitae nisl. Donec nec quam mi. Pellentesque vitae odio sed mi dignissim ornare. Aenean et massa vitae sapien tempor ultrices a ac ligula. In hendrerit, diam in mollis ultrices, tellus diam ornare turpis, id porttitor quam libero eget leo. Vivamus tincidunt egestas nisl." %}
-
 {% block body %}
 
 
@@ -28,7 +19,9 @@ Vestibulum imperdiet interdum hendrerit. Nunc nunc eros, ultricies a scelerisque
     {% if article is defined and article is not null %}
         <span style="display: flex; align-items: center;">
             <h1 style="margin: 0;">{{ article.titre }}</h1>
-            <a class="btn btn-warning" href="{{ path('edition_article', {'id': article.id}) }}" style="margin-left: 10px;">Modifier</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-warning" href="{{ path('edition_article', {'id': article.id}) }}" style="margin-left: 10px;">Modifier</a>
+            {% endif %}
         </span>
         <small>{{article.dateCreation|date('d/m/Y')}}</small>
         <p>{{article.contenu}}</p>

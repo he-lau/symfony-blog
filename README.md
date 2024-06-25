@@ -16,3 +16,4 @@ Projet d'initiation au framework Symfony 6.
 - `symfony console make:user` : générer base code pour gérer les utilisateurs.
 - `symfony console security:hash-password`: générer un mdp hashé.
 - `symfony console make:controller`: creer un controller.
+- `symfony console debug:router`: liste des routes de l'app.

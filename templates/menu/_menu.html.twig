@@ -5,20 +5,29 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Acceuil</a>
         </li>
+        {% if is_granted('ROLE_ADMIN')%}
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/article/ajouter">Ajouter un article</a>
+          <a class="nav-link" aria-current="page" href="{{ path('ajout_article') }}">Ajouter un article</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/article/brouillon">Brouillon</a>
-        </li>        
+          <a class="nav-link" aria-current="page" href="{{ path('brouillon_article') }}">Brouillon</a>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="navbar-nav ms-auto">
+      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/login">Se connecter</a>
-        </li>            
-
+          <a class="nav-link btn btn-danger" aria-current="page" href="{{ path('app_logout') }}">Se déconnecter</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link btn btn-info" aria-current="page" href="{{ path('app_login') }}">Se connecter</a>
+        </li>
+      {% endif %}
       </ul>
     </div>
   </div>
